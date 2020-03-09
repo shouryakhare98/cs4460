@@ -1,0 +1,32 @@
+[
+    {
+        "year":"1984",
+        "name":"Perimeter weighting in clubs",
+        "comments":"In the 1960s, Karsten Ping found that by moving some of the putter head's weight from behind the center of the club head to the heel and toe (aka perimeter weighting), he decreased putter head twisting and increased consistency and performance on less than perfect contact. By the mid 1980s, all manufacturers' iron sets included some sort of perimeter weighting."
+    },
+    {
+        "year":"1989",
+        "name":"Oversize metal-headed drivers",
+        "comments":"The first metal-headed drivers were developed in 1979. In 1989, they were followed by the first oversize metal-headed drivers. The oversize heads were cast with a hollow center and filled with foam, which made them the same weight as smaller wood heads. When combined with a longer, light-weight composite shaft, the oversize metal woods achieved a greater head velocity at impact and drove the ball further."
+    },
+    {
+        "year":"1995",
+        "name":"Graphite shafts",
+        "comments":"The graphite shaft was first marketed in 1970 at the PGA Merchandise Show but did not gain widespread use until the mid-1990s and is now used on almost all woods and some iron sets, as the carbon-fiber composite of graphite shafts boasts increased flex for greater clubhead speed at the cost of slightly reduced accuracy due to greater torque. Bottom line, it increased the distance, everything else being the same, by about 7 or 8 yards."
+    },
+    {
+        "year":"2000",
+        "name":"Titleist Pro V1 ball",
+        "comments":"In 2000, golf equipment manufacturer Titleist released their solid core ball, the Titleist Pro V1. Because of the solid core, the ball was accurate and could be hit for long distances. Many professionals switched from wound core to solid core soon, resulting in a 6 yard increase in drive distance between 2000 and 2001. Subsequent generations of the Pro V1 would also greately affect the drive distance."
+    },
+    {
+        "year":"2002",
+        "name":"Hybrid clubs",
+        "comments":"TaylorMade made the hybrid club popular with the release of its first set of hybrids in 2002. A hybrid golf club is simply a golf club which is designed to be an easier to hit alternative to a long iron. The primary advantage of a hybrid club is that it has design characteristics that make it easier to hit the ball higher. In addition, a hybrid club on average will send a ball approximately 5 to 8 yards further than will a typical iron."
+    },
+    {
+        "year":"2010",
+        "name":"Five-piece balls",
+        "comments":"TaylorMade created the first five-piece ball (cover, core and three mantles) in 2009. The soft rubber core limits the ball's spin rate off the tee. Each of the three mantle layers then becomes progressively firmer. The ball is designed to give high-level golfers the best of both worlds, providing lower spin rates (resulting in greater distance) on drives and high spin rates (permitting more control) when struck by lofted clubs."
+    }
+]

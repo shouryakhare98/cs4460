@@ -1,0 +1,19 @@
+.innovations:hover text, .innovations:hover line {
+    opacity: 1;
+}
+
+.innovations text {
+    opacity: 0;
+}
+
+.innovations line {
+    opacity: 0.5;
+    stroke: black;
+    stroke-width: 2.5;
+}
+
+.label {
+    fill: black;
+    font-size: 12px;
+    text-anchor: middle;
+}
