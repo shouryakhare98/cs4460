@@ -3,25 +3,53 @@
 <head>
     <meta charset="utf-8" />
     <title>Vaporflies - CS 4460 Final Project</title>
-    <link rel="stylesheet" href="./css/golf.css" />
+    <link rel="stylesheet" href="./css/main.css" />
 </head>
 <body>
     <h1>Improvement in Golf Distance with Technological Advances</h1>
+    <br />
+    <input type="checkbox" id="us_open" name="golf" checked/>
+    <label for="us_open" id="us_open_label">US Open Championship</label>
+    <input type="checkbox" id="pga_champ" name="golf" checked/>
+    <label for="pga_champ" id="pga_champ_label">PGA Championship</label>
+    <input type="checkbox" id="the_open" name="golf" checked/>
+    <label for="the_open" id="the_open_label">The Open Championship</label>
+    <input type="checkbox" id="masters" name="golf" checked/>
+    <label for="masters" id="masters_label">Masters Tournament</label>
+    <div id="golf_main">
+        <svg width="700" height="600" style="border: 1px solid #777;">
+        </svg>
+    </div>
+
     <br /><br />
 
-    <input type="checkbox" id="us_open" name="us_open" checked/>
-    <label for="us_open" id="us_open_label">US Open Championship</label>
-    <input type="checkbox" id="pga_champ" name="pga_champ" checked/>
-    <label for="pga_champ" id="pga_champ_label">PGA Championship</label>
-    <input type="checkbox" id="the_open" name="the_open" checked/>
-    <label for="the_open" id="the_open_label">The Open Championship</label>
-    <input type="checkbox" id="masters" name="masters" checked/>
-    <label for="masters" id="masters_label">Masters Tournament</label>
-    <div id="main">
+    <h1>Impact of Full Body Swimsuits on Swimming Times</h1>
+    <p>
+        Speedo LZR full body swimsuits were introduced in 2008 and banned in
+        2010. <br />
+        <span style="color:red;">Red</span> represents swimmers in the top 25
+        fastest swimmers in selected category that used a full body swimsuit.
+        <br />
+        <span style="color:blue;">Blue</span> represents swimmers in the top 25
+        fastest swimmers in selected category that did not use one.
+    </p>
+    <br />
+    <input type="radio" id="50_free" name="swimming" checked />
+    <label for="50_free" id="50_free_label">50m Freestyle</label>
+    <input type="radio" id="200_butterfly" name="swimming" />
+    <label for="200_butterfly" id="200_butterfly_label">200m Butterfly</label>
+    <input type="radio" id="400_indv_medley" name="swimming" />
+    <label for="400_indv_medley" id="400_indv_medley_label">400m Individual Medley</label>
+    <input type="radio" id="400_free" name="swimming" />
+    <label for="400_free" id="400_free_label">400m Freestyle</label>
+    <input type="radio" id="200_back" name="swimming" />
+    <label for="200_back" id="200_back_label">200m Backstroke</label>
+    <div id="swim_main">
         <svg width="700" height="600" style="border: 1px solid #777;">
         </svg>
     </div>
 </body>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="./js/golf.js"></script>
+<script src="./js/swimming.js"></script>
 </html>

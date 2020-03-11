@@ -1,31 +1,27 @@
-
-// Get svg and it's dimensions
-var svg = d3.select("#main").select("svg");
-var graphG = svg.append("g").attr("class", "line-plot");
-var svgWidth = +svg.attr("width");
-var svgHeight = +svg.attr("height");
-
-// Define margins and graph dimensions
-var margin = {top:40, left:47, bottom:40, right:30}
-var width = svgWidth - margin.left - margin.right;
-var height = svgHeight - margin.top - margin.bottom;
-
-// Get color scale
-var tournaments = ["us_open", "pga_champ", "masters", "the_open"];
-var colorScale = d3.scaleOrdinal(d3.schemeCategory10)
-    .domain(tournaments);
-
-// Color checkbox labels based on color scale
-tournaments.forEach(function(tournament) {
-    d3.select("#" + tournament + "_label")
-        .style("color", function(d) { return colorScale(tournament); })
-});
-
-// Create date parser
-var parseDate = d3.timeParse('%Y');
-
 // Read drive distance data
 d3.csv("./data/golf_drive_distance_yards.csv").then(function(data) {
+
+    // Get svg and it's dimensions
+    var svg = d3.select("#golf_main").select("svg");
+    var graphG = svg.append("g").attr("class", "line-plot");
+    var svgWidth = +svg.attr("width");
+    var svgHeight = +svg.attr("height");
+
+    // Define margins and graph dimensions
+    var margin = {top:40, left:47, bottom:40, right:30}
+    var width = svgWidth - margin.left - margin.right;
+    var height = svgHeight - margin.top - margin.bottom;
+
+    // Get color scale
+    var tournaments = ["us_open", "pga_champ", "masters", "the_open"];
+    var colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+        .domain(tournaments);
+
+    // Color checkbox labels based on color scale
+    tournaments.forEach(function(tournament) {
+        d3.select("#" + tournament + "_label")
+            .style("color", function(d) { return colorScale(tournament); })
+    });
 
     // Create scales for axes
     var xScale = d3.scaleTime()
@@ -107,9 +103,13 @@ d3.csv("./data/golf_drive_distance_yards.csv").then(function(data) {
         }
     }
 
-    // Read golf innovation data
-    d3.json("./data/golf_innovations.json").then(function(innovations) {
+    // Plot golf innovation
+    plotInnovations("./data/golf_innovations.json", graphG, margin, xScale, svgHeight);
+});
 
+// Global method to plot innovation data from JSON file
+function plotInnovations(sourceFile, graphG, margin, xScale, svgHeight) {
+    d3.json(sourceFile).then(function(innovations) {
         // Draw vertical line for each innovation
         var innov_line = graphG.selectAll(".innovations")
             .data(innovations)
@@ -136,4 +136,4 @@ d3.csv("./data/golf_drive_distance_yards.csv").then(function(data) {
             .attr("y", margin.top - 5)
             .text(function(d) { return d.name + ", " + d.year; });
     });
-});
+}
