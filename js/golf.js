@@ -1,86 +1,104 @@
-function golf() {
+
+// Object to hold golf data
+var golf = {}
+
+function lineGraph(zoomDict = null) {
     // Read drive distance data
     d3.csv("./data/golf_drive_distance_yards.csv").then(function(data) {
 
-        d3.selectAll("svg > *").remove();
-
         // Get svg and it's dimensions
         var svg = d3.select("#svg_div").select("svg");
-        var graphG = svg.append("g").attr("class", "graphg");
+        var graphG = svg.select(".graphg").empty() ? svg.append("g").attr("class", "graphg") : svg.select(".graphg");
         var svgWidth = +svg.attr("width");
         var svgHeight = +svg.attr("height");
 
         // Define margins and graph dimensions
-        var margin = {top:40, left:47, bottom:40, right:30}
-        var width = svgWidth - margin.left - margin.right;
-        var height = svgHeight - margin.top - margin.bottom;
+        golf.margin = {top:40, left:47, bottom:40, right:30}
+        golf.width = svgWidth - golf.margin.left - golf.margin.right;
+        golf.height = svgHeight - golf.margin.top - golf.margin.bottom;
 
         // Get color scale
         var tournaments = ["us_open", "pga_champ", "masters", "the_open"];
-        var colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+        golf.colorScale = d3.scaleOrdinal(d3.schemeCategory10)
             .domain(tournaments);
 
         // Color checkbox labels based on color scale
         tournaments.forEach(function(tournament) {
             d3.select("#" + tournament + "_label")
-                .style("color", function(d) { return colorScale(tournament); })
+                .style("color", function(d) {
+                    return golf.colorScale(tournament);
+                })
         });
 
         // Create scales for axes
-        var xScale = d3.scaleTime()
+        golf.xScale = d3.scaleTime()
             .domain(d3.extent(data, function(d) {return d.year;}))
-            .range([0, width])
+            .range([0, golf.width])
             .nice();
 
-        var yScale = d3.scaleLinear()
+        golf.yScale = d3.scaleLinear()
             .domain([250,310])
-            .range([height, 0])
+            .range([golf.height, 0])
             .nice();
 
-        // Draw axes and axes lables
-        var xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
-        var xAxisG = graphG.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(" + [margin.left,svgHeight - margin.bottom] + ")");
+        // Set animation duration
+        golf.animDuration = 1250;
 
-        xAxisG.transition()
-            .duration(1000)
-            .call(xAxis);
+        // Draw from scratch if nothing to zoom
+        if (!zoomDict) {
+            fullDraw();
+            plotInnovations("./data/golf_innovations.json");
+        } else {
+            zoom(zoomDict);
+        }
 
-        xAxisG.append("text")
-            .attr("class", "x label")
-            .attr("transform", "translate(412,35)")
-            .text("Year");
+        // Method to draw everything from scratch
+        function fullDraw() {
+            // Draw clip rectangle
+            drawClipRect();
 
-        var yAxis = d3.axisLeft(yScale);
-        var yAxisG = graphG.append("g")
-            .attr("class", "y axis")
-            .attr("transform", "translate(" + [margin.left,margin.bottom] + ")");
+            // Draw axes and axes lables
+            var xAxis = d3.axisBottom(golf.xScale).tickFormat(d3.format("d"));
+            var xAxisG = graphG.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(" + [golf.margin.left,svgHeight - golf.margin.bottom] + ")");
 
-        yAxisG.transition()
-            .duration(1000)
-            .call(yAxis);
+            xAxisG.transition()
+                .duration(golf.animDuration)
+                .call(xAxis);
 
-        yAxisG.append("text")
-            .attr("class", "y label")
-            .attr("transform", "translate(-33,275) rotate(-90)")
-            .text("Average Drive Distance (Yards)");
+            xAxisG.append("text")
+                .attr("class", "x label")
+                .attr("transform", "translate(412,35)")
+                .text("Year");
 
-        // Plot golf innovation
-        plotInnovations("./data/golf_innovations.json");
+            var yAxis = d3.axisLeft(golf.yScale);
+            var yAxisG = graphG.append("g")
+                .attr("class", "y axis")
+                .attr("transform", "translate(" + [golf.margin.left,golf.margin.bottom] + ")");
 
-        // Draw tournamets and add callbacks for checkbox updates
-        tournaments.forEach(function(tournament) {
-            if (d3.select("#" + tournament).property("checked")) {
-                draw(tournament);
-            }
+            yAxisG.transition()
+                .duration(golf.animDuration)
+                .call(yAxis);
 
-            d3.select("#" + tournament).on("change", function() {
-                update(tournament);
-            })
-        });
+            yAxisG.append("text")
+                .attr("class", "y label")
+                .attr("transform", "translate(-33,275) rotate(-90)")
+                .text("Average Drive Distance (Yards)");
 
-        // Function to draw lines based on list of tournaments given
+            // Draw tournamets and add callbacks for checkbox updates
+            tournaments.forEach(function(tournament) {
+                if (d3.select("#" + tournament).property("checked")) {
+                    draw(tournament);
+                }
+
+                d3.select("#" + tournament).on("change", function() {
+                    update(tournament);
+                })
+            });
+        }
+
+        // Method to draw lines based on list of tournaments given
         function draw(tournament) {
 
             // Filter -1 values
@@ -89,29 +107,48 @@ function golf() {
             });
 
             var lineInterpolate = d3.line()
-                .x(function(d) { return xScale(d.year); })
-                .y(function(d) { return yScale(+d[tournament]); });
+                .x(function(d) { return golf.xScale(d.year); })
+                .y(function(d) { return golf.yScale(+d[tournament]); });
 
-            var line = graphG.append("path")
-                .datum(filteredData)
-                .attr("transform", "translate(" + [margin.left,margin.bottom] + ")")
-                .transition()
-                .duration(1000)
-                .attr("d", lineInterpolate)
-                .attr("stroke", function(d) { return colorScale(tournament); })
-                .attr("stroke-width", 4)
-                .attr("fill", "none")
-                .attr("id", tournament + "_path");
+            var line = graphG.select("#" + tournament + "_path")
+            if (line.empty()) {
+                line = graphG.append("path")
+                    .datum(filteredData)
+                    .attr("transform", "translate(" + [golf.margin.left,golf.margin.bottom] + ")")
+                    .transition()
+                    .duration(golf.animDuration)
+                    .attr("d", lineInterpolate)
+                    .attr("stroke", function(d) {
+                        return golf.colorScale(tournament);
+                    })
+                    .attr("stroke-width", 4)
+                    .attr("fill", "none")
+                    .attr("id", tournament + "_path")
+                    .attr("clip-path", "url(#clip-rect)");
+            } else {
+                line.datum(filteredData)
+                    .attr("transform", "translate(" + [golf.margin.left,golf.margin.bottom] + ")")
+                    .transition()
+                    .duration(golf.animDuration)
+                    .attr("d", lineInterpolate)
+                    .attr("stroke", function(d) {
+                        return golf.colorScale(tournament);
+                    })
+                    .attr("stroke-width", 4)
+                    .attr("fill", "none")
+                    .attr("id", tournament + "_path")
+                    .attr("clip-path", "url(#clip-rect)");
+            }
         }
 
-        // Function to update line graph on checkbox updates
+        // Method to update line graph on checkbox updates
         function update(tournament) {
             if (d3.select("#" + tournament).property("checked")) {
                 draw(tournament);
             } else {
                 graphG.selectAll("#" + tournament + "_path")
                     .transition()
-                    .duration(1000)
+                    .duration(golf.animDuration)
                     .attr("stroke-width", 0)
                     .remove();
             }
@@ -120,7 +157,11 @@ function golf() {
         // Method to plot innovation data from JSON file
         function plotInnovations(sourceFile) {
             d3.json(sourceFile).then(function(innovations) {
-                var innov_line = graphG.selectAll(".innovations")
+
+                graphG.selectAll(".innovations").remove();
+
+                // if (innov_line.empty()) {
+                innov_line = graphG.selectAll(".innovations")
                     .data(innovations)
                     .enter()
                     .append("g")
@@ -128,19 +169,21 @@ function golf() {
 
                 // Render flag image for each innovation
                 innov_line.append("svg:image")
-                    .attr("x", -200)
+                    .attr("x", function(d) {
+                        return golf.xScale(d.year) + golf.margin.left - 3;
+                    })
                     .attr("y", function(d) {
-                        return margin.top + 20;
+                        return -1000;
                     })
                     .transition()
-                    .duration(1000)
-                    .attr("x", function(d) {
-                        return xScale(d.year) + margin.left - 3;
+                    .duration(golf.animDuration)
+                    .attr("y", function(d) {
+                        return golf.margin.top + 20;
                     })
                     .attr("height", "600px")
                     .attr("xlink:href", "images/golf_flag.png");
 
-                // Create tooltip for innovation
+                // Render tooltip for innovations
                 var tooltip = d3.select("#graphic").select("#tooltip")
                 if (tooltip.empty()) {
                     tooltip = d3.select("#graphic")
@@ -163,6 +206,46 @@ function golf() {
                             <br />${d.name}`);
                 });
             });
+        }
+
+        // Method to update graph when zooming
+        function zoom(zoomDict) {
+
+            // Update scales
+            golf.xScale.domain(zoomDict.xDomain).nice();
+            golf.yScale.domain(zoomDict.yDomain).nice();
+
+            // Update axes
+            var xAxisG = graphG.select(".x.axis")
+                .transition()
+                .duration(750)
+                .call(d3.axisBottom(golf.xScale).tickFormat(d3.format("d")));
+
+            var yAxisG = graphG.select(".y.axis")
+                .transition()
+                .duration(750)
+                .call(d3.axisLeft(golf.yScale));
+
+            // Update line graph
+            tournaments.forEach(function(tournament) {
+                update(tournament);
+            });
+
+            // Update innovation flags
+            plotInnovations("data/golf_innovations.json");
+        }
+
+        // Method to clip line graphs
+        function drawClipRect() {
+            var clip = graphG
+                .append("clipPath")
+                .attr("id", "clip-rect")
+                .append("rect")
+                .attr("width", golf.xScale(2020) - golf.xScale(1980) + 30)
+                .attr("height", golf.yScale(250) - golf.yScale(310))
+                .attr("transform", "translate(" + [golf.margin.left - 45,golf.margin.bottom] + ")")
+                .style("stroke", "black")
+                .style("fill", "none");
         }
     });
 }
