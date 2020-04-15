@@ -14,12 +14,13 @@
                 <div class="title"></div>
                 <br><br>
                 <h1>Technology and Sports</h1>
-                <p>By the Vaporflies <br /> Ross Cefalu, Shourya Khare, Sophie Handel, Tyler Jones</p>
                 <p>
                     Athletes have definitely improved over the years. They are fitter, and have access to high nutrition diet.
                     Tactics have also improved over the years. <br /><br />
 
                     But, technology has also played in key role in this improvement. <br /><br />
+
+                    Let's start with golf, followed by swimming, and running. <br /><br />
 
                     (Data taken from <a href="https://www.pgatour.com">PGA Tour</a>, surveying people at <a href="https://www.reddit.com/r/golf">r/golf</a>,
                     and {insert swim source}.)
@@ -75,7 +76,20 @@
             </section>
         </div>
         <div id="vis">
-
+            <div class="checkboxes">
+                <input type="checkbox" id="us_open" name="golf" checked>
+                <label for="us_open" id="us_open_label">US Open Championship</label>
+                <input type="checkbox" id="pga_champ" name="golf" checked>
+                <label for="pga_champ" id="pga_champ_label">PGA Championship</label>
+                <input type="checkbox" id="the_open" name="golf" checked>
+                <label for="the_open" id="the_open_label">The Open Championship</label>
+                <input type="checkbox" id="masters" name="golf" checked>
+                <label for="masters" id="masters_label">Masters Tournament</label>
+            </div>
+            <div id="svg_div">
+                <svg width="900" height="700">
+                </svg>
+            </div>
         </div>
     </div>
 </body>

@@ -128,194 +128,195 @@ function createSizeLegend2(){
 // Each element should also have an associated class name for easy reference
 
 function drawInitial(){
-    createSizeLegend()
-    createSizeLegend2()
-
-    let svg = d3.select("#vis")
-                    .append('svg')
-                    .attr('width', 1000)
-                    .attr('height', 950)
-                    .attr('opacity', 1)
-
-    let xAxis = d3.axisBottom(salaryXScale)
-                    .ticks(4)
-                    .tickSize(height + 80)
-
-    let xAxisGroup = svg.append('g')
-        .attr('class', 'first-axis')
-        .attr('transform', 'translate(0, 0)')
-        .call(xAxis)
-        .call(g => g.select('.domain')
-            .remove())
-        .call(g => g.selectAll('.tick line'))
-            .attr('stroke-opacity', 0.2)
-            .attr('stroke-dasharray', 2.5)
-
-    // Instantiates the force simulation
-    // Has no forces. Actual forces are added and removed as required
-
-    simulation = d3.forceSimulation(dataset)
-
-     // Define each tick of simulation
-    simulation.on('tick', () => {
-        nodes
-            .attr('cx', d => d.x)
-            .attr('cy', d => d.y)
-    })
-
-    // Stop the simulation until later
-    simulation.stop()
-
-    // Selection of all the circles
-    nodes = svg
-        .selectAll('circle')
-        .data(dataset)
-        .enter()
-        .append('circle')
-            .attr('fill', 'black')
-            .attr('r', 3)
-            .attr('cx', (d, i) => salaryXScale(d.Median) + 5)
-            .attr('cy', (d, i) => i * 5.2 + 30)
-            .attr('opacity', 0.8)
-
-    // Add mouseover and mouseout events for all circles
-    // Changes opacity and adds border
-    svg.selectAll('circle')
-        .on('mouseover', mouseOver)
-        .on('mouseout', mouseOut)
-
-    function mouseOver(d, i){
-
-        console.log('hi')
-        d3.select(this)
-            .transition('mouseover').duration(100)
-            .attr('opacity', 1)
-            .attr('stroke-width', 5)
-            .attr('stroke', 'black')
-
-        d3.select('#tooltip')
-            .style('left', (d3.event.pageX + 10)+ 'px')
-            .style('top', (d3.event.pageY - 25) + 'px')
-            .style('display', 'inline-block')
-            .html(`<strong>Major:</strong> ${d.Major[0] + d.Major.slice(1,).toLowerCase()}
-                <br> <strong>Median Salary:</strong> $${d3.format(",.2r")(d.Median)}
-                <br> <strong>Category:</strong> ${d.Category}
-                <br> <strong>% Female:</strong> ${Math.round(d.ShareWomen*100)}%
-                <br> <strong># Enrolled:</strong> ${d3.format(",.2r")(d.Total)}`)
-    }
-
-    function mouseOut(d, i){
-        d3.select('#tooltip')
-            .style('display', 'none')
-
-        d3.select(this)
-            .transition('mouseout').duration(100)
-            .attr('opacity', 0.8)
-            .attr('stroke-width', 0)
-    }
-
-    //Small text label for first graph
-    svg.selectAll('.small-text')
-        .data(dataset)
-        .enter()
-        .append('text')
-            .text((d, i) => d.Major.toLowerCase())
-            .attr('class', 'small-text')
-            .attr('x', margin.left)
-            .attr('y', (d, i) => i * 5.2 + 30)
-            .attr('font-size', 7)
-            .attr('text-anchor', 'end')
-
-    //All the required components for the small multiples charts
-    //Initialises the text and rectangles, and sets opacity to 0
-    svg.selectAll('.cat-rect')
-        .data(categories).enter()
-        .append('rect')
-            .attr('class', 'cat-rect')
-            .attr('x', d => categoriesXY[d][0] + 120 + 1000)
-            .attr('y', d => categoriesXY[d][1] + 30)
-            .attr('width', 160)
-            .attr('height', 30)
-            .attr('opacity', 0)
-            .attr('fill', 'grey')
-
-
-    svg.selectAll('.lab-text')
-        .data(categories).enter()
-        .append('text')
-        .attr('class', 'lab-text')
-        .attr('opacity', 0)
-        .raise()
-
-    svg.selectAll('.lab-text')
-        .text(d => `Average: $${d3.format(",.2r")(categoriesXY[d][2])}`)
-        .attr('x', d => categoriesXY[d][0] + 200 + 1000)
-        .attr('y', d => categoriesXY[d][1] - 500)
-        .attr('font-family', 'Domine')
-        .attr('font-size', '12px')
-        .attr('font-weight', 700)
-        .attr('fill', 'black')
-        .attr('text-anchor', 'middle')
-
-    svg.selectAll('.lab-text')
-            .on('mouseover', function(d, i){
-                d3.select(this)
-                    .text(d)
-            })
-            .on('mouseout', function(d, i){
-                d3.select(this)
-                    .text(d => `Average: $${d3.format(",.2r")(categoriesXY[d][2])}`)
-            })
-
-
-    // Best fit line for gender scatter plot
-
-    const bestFitLine = [{x: 0, y: 56093}, {x: 1, y: 25423}]
-    const lineFunction = d3.line()
-                            .x(d => shareWomenXScale(d.x))
-                            .y(d => salaryYScale(d.y))
-
-    // Axes for Scatter Plot
-    svg.append('path')
-        .transition('best-fit-line').duration(430)
-            .attr('class', 'best-fit')
-            .attr('d', lineFunction(bestFitLine))
-            .attr('stroke', 'grey')
-            .attr('stroke-dasharray', 6.2)
-            .attr('opacity', 0)
-            .attr('stroke-width', 3)
-
-    let scatterxAxis = d3.axisBottom(shareWomenXScale)
-    let scatteryAxis = d3.axisLeft(salaryYScale).tickSize([width])
-
-    svg.append('g')
-        .call(scatterxAxis)
-        .attr('class', 'scatter-x')
-        .attr('opacity', 0)
-        .attr('transform', `translate(0, ${height + margin.top})`)
-        .call(g => g.select('.domain')
-            .remove())
-
-    svg.append('g')
-        .call(scatteryAxis)
-        .attr('class', 'scatter-y')
-        .attr('opacity', 0)
-        .attr('transform', `translate(${margin.left - 20 + width}, 0)`)
-        .call(g => g.select('.domain')
-            .remove())
-        .call(g => g.selectAll('.tick line'))
-            .attr('stroke-opacity', 0.2)
-            .attr('stroke-dasharray', 2.5)
-
-    // Axes for Histogram
-
-    let histxAxis = d3.axisBottom(enrollmentScale)
-
-    svg.append('g')
-        .attr('class', 'enrolment-axis')
-        .attr('transform', 'translate(0, 700)')
-        .attr('opacity', 0)
-        .call(histxAxis)
+    // createSizeLegend()
+    // createSizeLegend2()
+    //
+    // let svg = d3.select("#vis")
+    //                 .append('svg')
+    //                 .attr('width', 1000)
+    //                 .attr('height', 950)
+    //                 .attr('opacity', 1)
+    //
+    // let xAxis = d3.axisBottom(salaryXScale)
+    //                 .ticks(4)
+    //                 .tickSize(height + 80)
+    //
+    // let xAxisGroup = svg.append('g')
+    //     .attr('class', 'first-axis')
+    //     .attr('transform', 'translate(0, 0)')
+    //     .call(xAxis)
+    //     .call(g => g.select('.domain')
+    //         .remove())
+    //     .call(g => g.selectAll('.tick line'))
+    //         .attr('stroke-opacity', 0.2)
+    //         .attr('stroke-dasharray', 2.5)
+    //
+    // // Instantiates the force simulation
+    // // Has no forces. Actual forces are added and removed as required
+    //
+    // simulation = d3.forceSimulation(dataset)
+    //
+    //  // Define each tick of simulation
+    // simulation.on('tick', () => {
+    //     nodes
+    //         .attr('cx', d => d.x)
+    //         .attr('cy', d => d.y)
+    // })
+    //
+    // // Stop the simulation until later
+    // simulation.stop()
+    //
+    // // Selection of all the circles
+    // nodes = svg
+    //     .selectAll('circle')
+    //     .data(dataset)
+    //     .enter()
+    //     .append('circle')
+    //         .attr('fill', 'black')
+    //         .attr('r', 3)
+    //         .attr('cx', (d, i) => salaryXScale(d.Median) + 5)
+    //         .attr('cy', (d, i) => i * 5.2 + 30)
+    //         .attr('opacity', 0.8)
+    //
+    // // Add mouseover and mouseout events for all circles
+    // // Changes opacity and adds border
+    // svg.selectAll('circle')
+    //     .on('mouseover', mouseOver)
+    //     .on('mouseout', mouseOut)
+    //
+    // function mouseOver(d, i){
+    //
+    //     console.log('hi')
+    //     d3.select(this)
+    //         .transition('mouseover').duration(100)
+    //         .attr('opacity', 1)
+    //         .attr('stroke-width', 5)
+    //         .attr('stroke', 'black')
+    //
+    //     d3.select('#tooltip')
+    //         .style('left', (d3.event.pageX + 10)+ 'px')
+    //         .style('top', (d3.event.pageY - 25) + 'px')
+    //         .style('display', 'inline-block')
+    //         .html(`<strong>Major:</strong> ${d.Major[0] + d.Major.slice(1,).toLowerCase()}
+    //             <br> <strong>Median Salary:</strong> $${d3.format(",.2r")(d.Median)}
+    //             <br> <strong>Category:</strong> ${d.Category}
+    //             <br> <strong>% Female:</strong> ${Math.round(d.ShareWomen*100)}%
+    //             <br> <strong># Enrolled:</strong> ${d3.format(",.2r")(d.Total)}`)
+    // }
+    //
+    // function mouseOut(d, i){
+    //     d3.select('#tooltip')
+    //         .style('display', 'none')
+    //
+    //     d3.select(this)
+    //         .transition('mouseout').duration(100)
+    //         .attr('opacity', 0.8)
+    //         .attr('stroke-width', 0)
+    // }
+    //
+    // //Small text label for first graph
+    // svg.selectAll('.small-text')
+    //     .data(dataset)
+    //     .enter()
+    //     .append('text')
+    //         .text((d, i) => d.Major.toLowerCase())
+    //         .attr('class', 'small-text')
+    //         .attr('x', margin.left)
+    //         .attr('y', (d, i) => i * 5.2 + 30)
+    //         .attr('font-size', 7)
+    //         .attr('text-anchor', 'end')
+    //
+    // //All the required components for the small multiples charts
+    // //Initialises the text and rectangles, and sets opacity to 0
+    // svg.selectAll('.cat-rect')
+    //     .data(categories).enter()
+    //     .append('rect')
+    //         .attr('class', 'cat-rect')
+    //         .attr('x', d => categoriesXY[d][0] + 120 + 1000)
+    //         .attr('y', d => categoriesXY[d][1] + 30)
+    //         .attr('width', 160)
+    //         .attr('height', 30)
+    //         .attr('opacity', 0)
+    //         .attr('fill', 'grey')
+    //
+    //
+    // svg.selectAll('.lab-text')
+    //     .data(categories).enter()
+    //     .append('text')
+    //     .attr('class', 'lab-text')
+    //     .attr('opacity', 0)
+    //     .raise()
+    //
+    // svg.selectAll('.lab-text')
+    //     .text(d => `Average: $${d3.format(",.2r")(categoriesXY[d][2])}`)
+    //     .attr('x', d => categoriesXY[d][0] + 200 + 1000)
+    //     .attr('y', d => categoriesXY[d][1] - 500)
+    //     .attr('font-family', 'Domine')
+    //     .attr('font-size', '12px')
+    //     .attr('font-weight', 700)
+    //     .attr('fill', 'black')
+    //     .attr('text-anchor', 'middle')
+    //
+    // svg.selectAll('.lab-text')
+    //         .on('mouseover', function(d, i){
+    //             d3.select(this)
+    //                 .text(d)
+    //         })
+    //         .on('mouseout', function(d, i){
+    //             d3.select(this)
+    //                 .text(d => `Average: $${d3.format(",.2r")(categoriesXY[d][2])}`)
+    //         })
+    //
+    //
+    // // Best fit line for gender scatter plot
+    //
+    // const bestFitLine = [{x: 0, y: 56093}, {x: 1, y: 25423}]
+    // const lineFunction = d3.line()
+    //                         .x(d => shareWomenXScale(d.x))
+    //                         .y(d => salaryYScale(d.y))
+    //
+    // // Axes for Scatter Plot
+    // svg.append('path')
+    //     .transition('best-fit-line').duration(430)
+    //         .attr('class', 'best-fit')
+    //         .attr('d', lineFunction(bestFitLine))
+    //         .attr('stroke', 'grey')
+    //         .attr('stroke-dasharray', 6.2)
+    //         .attr('opacity', 0)
+    //         .attr('stroke-width', 3)
+    //
+    // let scatterxAxis = d3.axisBottom(shareWomenXScale)
+    // let scatteryAxis = d3.axisLeft(salaryYScale).tickSize([width])
+    //
+    // svg.append('g')
+    //     .call(scatterxAxis)
+    //     .attr('class', 'scatter-x')
+    //     .attr('opacity', 0)
+    //     .attr('transform', `translate(0, ${height + margin.top})`)
+    //     .call(g => g.select('.domain')
+    //         .remove())
+    //
+    // svg.append('g')
+    //     .call(scatteryAxis)
+    //     .attr('class', 'scatter-y')
+    //     .attr('opacity', 0)
+    //     .attr('transform', `translate(${margin.left - 20 + width}, 0)`)
+    //     .call(g => g.select('.domain')
+    //         .remove())
+    //     .call(g => g.selectAll('.tick line'))
+    //         .attr('stroke-opacity', 0.2)
+    //         .attr('stroke-dasharray', 2.5)
+    //
+    // // Axes for Histogram
+    //
+    // let histxAxis = d3.axisBottom(enrollmentScale)
+    //
+    // svg.append('g')
+    //     .attr('class', 'enrolment-axis')
+    //     .attr('transform', 'translate(0, 700)')
+    //     .attr('opacity', 0)
+    //     .call(histxAxis)
+    golf();
 }
 
 //Cleaning Function
@@ -578,15 +579,12 @@ function draw8(){
 //Will be called from the scroller functionality
 
 let activationFunctions = [
-    // draw1,
-    // draw2,
-    // draw3,
-    // draw4,
-    // draw5,
-    // draw6,
-    // draw7,
-    // draw8
-]
+    golf,
+    golf,
+    golf,
+    golf,
+    golf
+];
 
 //All the scrolling function
 //Will draw a new graph based on the index provided by the scroll
@@ -598,6 +596,8 @@ scroll()
 
 let lastIndex, activeIndex = 0
 
+golf()
+
 scroll.on('active', function(index){
     d3.selectAll('.step')
         .transition().duration(500)
@@ -607,8 +607,8 @@ scroll.on('active', function(index){
     let sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
     let scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
     scrolledSections.forEach(i => {
-        // activationFunctions[i]();
-        console.log(activeIndex);
+        activationFunctions[i]();
+        //console.log(activeIndex);
     })
     lastIndex = activeIndex;
 })

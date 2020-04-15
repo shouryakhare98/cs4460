@@ -1,8 +1,12 @@
-.innovations:hover text, .innovations:hover line {
+.innovations:hover {
     opacity: 1;
 }
 
-.innovations text {
+.innovations {
+    opacity: 0.5;
+}
+
+/* .innovations text {
     opacity: 0;
 }
 
@@ -10,11 +14,19 @@
     opacity: 0.5;
     stroke: black;
     stroke-width: 2.5;
-}
+} */
 
 .label {
     fill: black;
     font-size: 12px;
     text-anchor: middle;
-    font-family: sans-serif;
+    font-family: "Domine", serif;
+}
+
+.checkboxes input {
+    margin: 80px 0px 0px 0px;
+}
+
+.checkboxes label {
+    margin: 80px 30px 0px 3px;
 }

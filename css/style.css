@@ -18,6 +18,7 @@ body {
 
 .step {
     margin-bottom: 100px;
+    margin-left: 20px;
     height: 700px;
     font-family: "Domine", serif;
     font-weight: 400;
@@ -58,6 +59,7 @@ strong {
     margin-left: 0;
     height: 1000px;
     width: 1000px;
+    text-align: center;
 }
 
 .tick line {
@@ -66,15 +68,12 @@ strong {
 
 #tooltip {
     position: absolute;
-    display: none;
     background: rgba(0, 0, 0, .7);
     border-radius: 3px;
-    box-shadow: -3px 3px 15px #939393;
     color: white;
     padding: 6px;
     font-family: "Domine", serif;
     font-size: 1.1em;
-    max-width: 400px;
     z-index: 100;
 }
 
@@ -99,4 +98,8 @@ a {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+label {
+    font-family: "Domine", serif;
 }
