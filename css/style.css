@@ -23,15 +23,12 @@ body {
     font-family: "Domine", serif;
     font-weight: 400;
     line-height: 1.4em;
-    text-align: justify;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-around; */
+    text-align: left;
 }
 
 h1, h2 {
     font-weight: 700;
-    text-align: right;
+    text-align: left;
     line-height: 32px;
 }
 
@@ -68,6 +65,7 @@ strong {
 
 #tooltip {
     position: absolute;
+    display: none;
     background: rgba(0, 0, 0, .7);
     border-radius: 3px;
     color: white;
@@ -75,18 +73,6 @@ strong {
     font-family: "Domine", serif;
     font-size: 1.1em;
     z-index: 100;
-}
-
-svg circle:hover{
-    cursor: pointer;
-}
-
-.swatch {
-    fill: #939393;
-}
-
-.sizeLegend2 {
-    opacity: 0.7
 }
 
 a {
@@ -102,4 +88,13 @@ a {
 
 label {
     font-family: "Domine", serif;
+}
+
+.dot {
+    opacity: 0.7;
+}
+
+.dot:hover {
+    opacity: 1;
+    stroke: black;
 }

@@ -6,16 +6,6 @@
     opacity: 0.5;
 }
 
-/* .innovations text {
-    opacity: 0;
-}
-
-.innovations line {
-    opacity: 0.5;
-    stroke: black;
-    stroke-width: 2.5;
-} */
-
 .label {
     fill: black;
     font-size: 12px;
@@ -29,4 +19,19 @@
 
 .checkboxes label {
     margin: 80px 30px 0px 3px;
+}
+
+#golf-inputs {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#swim-inputs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
 }

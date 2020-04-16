@@ -83,19 +83,35 @@
             </section>
         </div>
         <div id="vis">
-            <div class="checkboxes">
-                <input type="checkbox" id="us_open" name="golf" checked>
-                <label for="us_open" id="us_open_label">US Open Championship</label>
-                <input type="checkbox" id="pga_champ" name="golf" checked>
-                <label for="pga_champ" id="pga_champ_label">PGA Championship</label>
-                <input type="checkbox" id="the_open" name="golf" checked>
-                <label for="the_open" id="the_open_label">The Open Championship</label>
-                <input type="checkbox" id="masters" name="golf" checked>
-                <label for="masters" id="masters_label">Masters Tournament</label>
+            <div class="input-wrapper" style="position:relative; height:90px">
+                <div class="checkboxes" id="golf-inputs">
+                    <input type="checkbox" id="us_open" name="golf" checked>
+                    <label for="us_open" id="us_open_label">US Open Championship</label>
+                    <input type="checkbox" id="pga_champ" name="golf" checked>
+                    <label for="pga_champ" id="pga_champ_label">PGA Championship</label>
+                    <input type="checkbox" id="the_open" name="golf" checked>
+                    <label for="the_open" id="the_open_label">The Open Championship</label>
+                    <input type="checkbox" id="masters" name="golf" checked>
+                    <label for="masters" id="masters_label">Masters Tournament</label>
+                </div>
+                <div class="checkboxes" id="swim-inputs">
+                    <input type="radio" id="50_free" name="swimming" checked />
+                    <label for="50_free" id="50_free_label">50m Freestyle</label>
+                    <input type="radio" id="200_butterfly" name="swimming" />
+                    <label for="200_butterfly" id="200_butterfly_label">200m Butterfly</label>
+                    <input type="radio" id="400_indv_medley" name="swimming" />
+                    <label for="400_indv_medley" id="400_indv_medley_label">400m Individual Medley</label>
+                    <input type="radio" id="400_free" name="swimming" />
+                    <label for="400_free" id="400_free_label">400m Freestyle</label>
+                    <input type="radio" id="200_back" name="swimming" />
+                    <label for="200_back" id="200_back_label">200m Backstroke</label>
+                </div>
             </div>
-            <div id="svg_div">
-                <svg width="900" height="700">
-                </svg>
+            <div class="svg-wrapper" style="position:relative; left:-60px">
+                <div id="svg_div">
+                    <svg width="900" height="700">
+                    </svg>
+                </div>
             </div>
         </div>
     </div>

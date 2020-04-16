@@ -8,7 +8,7 @@ function drawInitial() {
 function zoomOut() {
     var zoomDict = {
         xDomain: [1980, 2019],
-        yDomain: [250, 310]
+        yDomain: [250, 310],
     }
 
     lineGraph(zoomDict);
@@ -18,7 +18,7 @@ function zoomOut() {
 function graphiteZoom() {
     var zoomDict = {
         xDomain: [1994, 1997],
-        yDomain: [255, 268]
+        yDomain: [255, 268],
     };
 
     lineGraph(zoomDict);
@@ -36,12 +36,54 @@ function titleistZoom() {
 
 // Hybrid club zoom
 function hybridClubZoom() {
+
     var zoomDict = {
         xDomain: [2001, 2003],
         yDomain: [274, 287]
     };
 
     lineGraph(zoomDict);
+}
+
+// Swim graph
+function displaySwim() {
+    toggleInputs("#swim-inputs", "#golf-inputs");
+    clearSvg();
+    scatterPlot();
+}
+
+// Going from swim to golf
+function swimToGolf() {
+    toggleInputs("#golf-inputs", "#swim-inputs");
+    clearSvg();
+
+    var zoomDict = {
+        xDomain: [2001, 2003],
+        yDomain: [274, 287]
+    };
+    lineGraph(zoomDict, redraw=true)
+}
+
+// Function to clear svg
+function clearSvg() {
+    d3.selectAll("svg>*").transition().duration(golf.animDuration/4).style("opacity", 0).remove();
+}
+
+// Function to toggle inputs
+function toggleInputs(enable, disable) {
+    d3.select(disable)
+        .transition()
+        .duration(200)
+        .style("opacity", 0)
+        .style("pointer-events", "none")
+        .style("z-index", -1);
+
+    d3.select(enable)
+        .transition()
+        .duration(1200)
+        .style("opacity", 1)
+        .style("pointer-events", "all")
+        .style("z-index", 0);
 }
 
 //Cleaning Function
@@ -81,7 +123,7 @@ let activationFunctions = [
     graphiteZoom,
     titleistZoom,
     hybridClubZoom,
-    zoomOut
+    displaySwim
 ];
 
 //All the scrolling function
@@ -105,8 +147,11 @@ scroll.on('active', function(index){
     let sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
     let scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
     scrolledSections.forEach(i => {
-        activationFunctions[i]();
-        //console.log(activeIndex);
+        if (activeIndex == 3 && sign == -1) {
+            swimToGolf();
+        } else {
+            activationFunctions[i]();
+        }
     })
     lastIndex = activeIndex;
 })

@@ -2,7 +2,7 @@
 // Object to hold golf data
 var golf = {}
 
-function lineGraph(zoomDict = null) {
+function lineGraph(zoomDict = null, redraw = false) {
     // Read drive distance data
     d3.csv("./data/golf_drive_distance_yards.csv").then(function(data) {
 
@@ -49,6 +49,11 @@ function lineGraph(zoomDict = null) {
             fullDraw();
             plotInnovations("./data/golf_innovations.json");
         } else {
+            if (redraw) {
+                drawClipRect();
+                drawAxes();
+            }
+
             zoom(zoomDict);
         }
 
@@ -57,7 +62,23 @@ function lineGraph(zoomDict = null) {
             // Draw clip rectangle
             drawClipRect();
 
-            // Draw axes and axes lables
+            drawAxes();
+
+            // Draw tournamets and add callbacks for checkbox updates
+            tournaments.forEach(function(tournament) {
+                if (d3.select("#" + tournament).property("checked")) {
+                    draw(tournament);
+                }
+
+                d3.select("#" + tournament).on("change", function() {
+                    update(tournament);
+                })
+            });
+        }
+
+        // Draw axes and axes lables
+        function drawAxes() {
+
             var xAxis = d3.axisBottom(golf.xScale).tickFormat(d3.format("d"));
             var xAxisG = graphG.append("g")
                 .attr("class", "x axis")
@@ -85,17 +106,6 @@ function lineGraph(zoomDict = null) {
                 .attr("class", "y label")
                 .attr("transform", "translate(-33,275) rotate(-90)")
                 .text("Average Drive Distance (Yards)");
-
-            // Draw tournamets and add callbacks for checkbox updates
-            tournaments.forEach(function(tournament) {
-                if (d3.select("#" + tournament).property("checked")) {
-                    draw(tournament);
-                }
-
-                d3.select("#" + tournament).on("change", function() {
-                    update(tournament);
-                })
-            });
         }
 
         // Method to draw lines based on list of tournaments given
@@ -160,7 +170,6 @@ function lineGraph(zoomDict = null) {
 
                 graphG.selectAll(".innovations").remove();
 
-                // if (innov_line.empty()) {
                 innov_line = graphG.selectAll(".innovations")
                     .data(innovations)
                     .enter()
@@ -202,8 +211,7 @@ function lineGraph(zoomDict = null) {
                     tooltip.style('left', (d3.event.pageX + 10)+ 'px')
                         .style('top', (d3.event.pageY - 25) + 'px')
                         .style('display', 'inline-block')
-                        .html(`<strong>${d.year}</strong>
-                            <br />${d.name}`);
+                        .html(`<strong>${d.year}</strong><br />${d.name}`);
                 });
             });
         }

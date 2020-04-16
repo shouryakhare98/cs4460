@@ -1,5 +1,5 @@
 position,time,swimmer,date,venue,nationality,full_body_suit,sex,event
-1,00:20.910,Cesar Cielo,17-Dec-09,Brazil,Brazi,yes,male,50_free
+1,00:20.910,Cesar Cielo,17-Dec-09,Brazil,Brazil,yes,male,50_free
 2,00:20.940,Frederick Bousquet,22-Apr-09,France,France,yes,male,50_free
 3,00:21.040,Caeleb Dressel,27-Jul-19,South Korea,USA,no,male,50_free
 4,00:21.110,Benjamin Proud,03-Aug-18,Great Britain,UK,no,male,50_free
@@ -7,7 +7,7 @@ position,time,swimmer,date,venue,nationality,full_body_suit,sex,event
 6,00:21.190,Florent Manaudou,02-Aug-15,Russia,France,no,male,50_free
 7,00:21.200,George Bovell,31-Jul-09,Italy,Trinidad and Tobago,yes,male,50_free
 8,00:21.230,Alain Bernard,22-Apr-09,France,France,yes,male,50_free
-9,00:21.250,Amaury Leveaux,01-Aug-09,Italy,Frace,yes,male,50_free
+9,00:21.250,Amaury Leveaux,01-Aug-09,Italy,France,yes,male,50_free
 10,00:21.270,Bruno Fratus,29-Jul-17,Hungary,Brazil,no,male,50_free
 11,00:21.270,Vladimir Morozov,15-Aug-19,Singapore,Rusia,no,male,50_free
 12,00:21.280,Eamon Sullivan,22-Mar-08,Australia,Austrialia,yes,male,50_free
