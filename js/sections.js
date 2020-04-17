@@ -1,7 +1,11 @@
 
 // Draw initial graph
 function drawInitial() {
-    lineGraph();
+    setTimeout(clearSvg, 500);
+    setTimeout(function() {
+        toggleInputs("#golf-inputs", "#swim-inputs");
+    }, 750);
+    setTimeout(lineGraph, 1000);
 }
 
 // Zoom out to original
@@ -52,18 +56,6 @@ function displaySwim() {
     scatterPlot();
 }
 
-// Going from swim to golf
-function swimToGolf() {
-    toggleInputs("#golf-inputs", "#swim-inputs");
-    clearSvg();
-
-    var zoomDict = {
-        xDomain: [2001, 2003],
-        yDomain: [274, 287]
-    };
-    lineGraph(zoomDict, redraw=true)
-}
-
 // Function to clear svg
 function clearSvg() {
     d3.selectAll("svg>*").transition().duration(golf.animDuration/4).style("opacity", 0).remove();
@@ -86,33 +78,16 @@ function toggleInputs(enable, disable) {
         .style("z-index", 0);
 }
 
-//Cleaning Function
-//Will hide all the elements which are not necessary for a given chart type
+// Function for swim to golf transition
+function swimToGolf() {
+    clearSvg();
+    toggleInputs("#golf-inputs", "#swim-inputs");
+    lineGraph();
+}
 
-function clean(chartType){
-    let svg = d3.select('#vis').select('svg')
-    if (chartType !== "isScatter") {
-        svg.select('.scatter-x').transition().attr('opacity', 0)
-        svg.select('.scatter-y').transition().attr('opacity', 0)
-        svg.select('.best-fit').transition().duration(200).attr('opacity', 0)
-    }
-    if (chartType !== "isMultiples"){
-        svg.selectAll('.lab-text').transition().attr('opacity', 0)
-            .attr('x', 1800)
-        svg.selectAll('.cat-rect').transition().attr('opacity', 0)
-            .attr('x', 1800)
-    }
-    if (chartType !== "isFirst"){
-        svg.select('.first-axis').transition().attr('opacity', 0)
-        svg.selectAll('.small-text').transition().attr('opacity', 0)
-            .attr('x', -200)
-    }
-    if (chartType !== "isHist"){
-        svg.selectAll('.hist-axis').transition().attr('opacity', 0)
-    }
-    if (chartType !== "isBubble"){
-        svg.select('.enrolment-axis').transition().attr('opacity', 0)
-    }
+// Dummy function that does nothing
+function dummyFunc() {
+
 }
 
 //Array of all the graph functions
@@ -123,7 +98,9 @@ let activationFunctions = [
     graphiteZoom,
     titleistZoom,
     hybridClubZoom,
-    displaySwim
+    zoomOut,
+    displaySwim,
+    dummyFunc
 ];
 
 //All the scrolling function
@@ -147,17 +124,13 @@ scroll.on('active', function(index){
     let sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
     let scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
     scrolledSections.forEach(i => {
-        if (activeIndex == 3 && sign == -1) {
+        if (activeIndex == 4 && sign == -1) {
             swimToGolf();
+        } else if (activeIndex == 5 && sign == -1) {
+            dummyFunc();
         } else {
             activationFunctions[i]();
         }
     })
     lastIndex = activeIndex;
-})
-
-scroll.on('progress', function(index, progress){
-    if (index == 2 & progress > 0.7){
-
-    }
 })

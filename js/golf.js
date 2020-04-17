@@ -8,6 +8,7 @@ function lineGraph(zoomDict = null, redraw = false) {
 
         // Get svg and it's dimensions
         var svg = d3.select("#svg_div").select("svg");
+        if (svg.empty()) svg = d3.select("#svg_div").append("svg").attr("width", 900).attr("height", 700);
         var graphG = svg.select(".graphg").empty() ? svg.append("g").attr("class", "graphg") : svg.select(".graphg");
         var svgWidth = +svg.attr("width");
         var svgHeight = +svg.attr("height");

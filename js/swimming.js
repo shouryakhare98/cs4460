@@ -111,9 +111,9 @@ function scatterPlot() {
                 .attr("r", 6)
                 .attr("fill", function(d) {
                     if (d.full_body_suit == "yes") {
-                        return "#E6E600";
+                        return "#CC0066";
                     } else {
-                        return "#A6A6A6";
+                        return "#808080";
                     }
                 });
 
@@ -130,7 +130,7 @@ function scatterPlot() {
                     .style('top', (d3.event.pageY - 25) + 'px')
                     .style('display', 'inline-block')
                     .html(`<strong>Name: </strong>${d.swimmer}<br />
-                        <strong>Time: </strong>${(d.time).getSeconds()+"."+(d.time).getMilliseconds()+" sec"}<br />
+                        <strong>Time: </strong>${(d.time).getMinutes()+":"+(d.time).getSeconds()+"."+(d.time).getMilliseconds()}<br />
                         <strong>Full Body Suit: </strong>${d.full_body_suit.charAt(0).toUpperCase() + d.full_body_suit.slice(1)}`);
             }).on("mouseout", function(d) {
                 tooltip.style("display", "none");
@@ -139,7 +139,7 @@ function scatterPlot() {
                     .style('top', (d3.event.pageY - 25) + 'px')
                     .style('display', 'inline-block')
                     .html(`<strong>Name: </strong>${d.swimmer}<br />
-                        <strong>Time: </strong>${(d.time).getSeconds()+"."+(d.time).getMilliseconds()+" sec"}<br />
+                        <strong>Time: </strong>${(d.time).getMinutes()+":"+(d.time).getSeconds()+"."+(d.time).getMilliseconds()}<br />
                         <strong>Full Body Suit: </strong>${d.full_body_suit.charAt(0).toUpperCase() + d.full_body_suit.slice(1)}`);
             });
         }
