@@ -14,7 +14,7 @@ function lineGraph(zoomDict = null, redraw = false) {
         var svgHeight = +svg.attr("height");
 
         // Define margins and graph dimensions
-        golf.margin = {top:40, left:47, bottom:40, right:30}
+        golf.margin = {top:40, left:47, bottom:40, right:30};
         golf.width = svgWidth - golf.margin.left - golf.margin.right;
         golf.height = svgHeight - golf.margin.top - golf.margin.bottom;
 

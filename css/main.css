@@ -35,3 +35,20 @@
     pointer-events: none;
     z-index: -1;
 }
+
+.tile {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.tile text {
+    stroke: black;
+    fill: white;
+    font-family: "Varela Round", sans-serif;
+    font-size: 75px;
+}
+
+.tile:hover {
+    transition-duration: 500ms;
+    opacity: 1;
+}

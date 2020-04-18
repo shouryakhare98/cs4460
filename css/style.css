@@ -73,6 +73,7 @@ strong {
     font-family: "Domine", serif;
     font-size: 1.1em;
     z-index: 100;
+    max-width: 300px;
 }
 
 a {

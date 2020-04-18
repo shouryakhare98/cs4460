@@ -3,7 +3,7 @@
 function drawInitial() {
     setTimeout(clearSvg, 500);
     setTimeout(function() {
-        toggleInputs("#golf-inputs", "#swim-inputs");
+        toggleInputs(enable="#golf-inputs", disable="#swim-inputs");
     }, 750);
     setTimeout(lineGraph, 1000);
 }
@@ -51,7 +51,7 @@ function hybridClubZoom() {
 
 // Swim graph
 function displaySwim() {
-    toggleInputs("#swim-inputs", "#golf-inputs");
+    toggleInputs(enable="#swim-inputs", disable="#golf-inputs");
     clearSvg();
     scatterPlot();
 }
@@ -62,32 +62,44 @@ function clearSvg() {
 }
 
 // Function to toggle inputs
-function toggleInputs(enable, disable) {
-    d3.select(disable)
-        .transition()
-        .duration(200)
-        .style("opacity", 0)
-        .style("pointer-events", "none")
-        .style("z-index", -1);
+function toggleInputs(enable=null, disable=null) {
+    if (disable) {
+        d3.select(disable)
+            .transition()
+            .duration(200)
+            .style("opacity", 0)
+            .style("pointer-events", "none")
+            .style("z-index", -1);
+    }
 
-    d3.select(enable)
-        .transition()
-        .duration(1200)
-        .style("opacity", 1)
-        .style("pointer-events", "all")
-        .style("z-index", 0);
+    if (enable) {
+        d3.select(enable)
+            .transition()
+            .duration(1200)
+            .style("opacity", 1)
+            .style("pointer-events", "all")
+            .style("z-index", 0);
+    }
 }
 
 // Function for swim to golf transition
 function swimToGolf() {
     clearSvg();
-    toggleInputs("#golf-inputs", "#swim-inputs");
+    toggleInputs(enable="#golf-inputs", disable="#swim-inputs");
     lineGraph();
 }
 
 // Dummy function that does nothing
 function dummyFunc() {
 
+}
+
+// Display running
+function displayRun() {
+    toggleInputs(enable=null, disable="#swim-inputs");
+    toggleInputs(enable=null, disable="#golf-inputs");
+    clearSvg();
+    tiles();
 }
 
 //Array of all the graph functions
@@ -100,7 +112,10 @@ let activationFunctions = [
     hybridClubZoom,
     zoomOut,
     displaySwim,
-    dummyFunc
+    dummyFunc,
+    displayRun,
+    dummyFunc,
+    clearSvg
 ];
 
 //All the scrolling function
@@ -128,6 +143,12 @@ scroll.on('active', function(index){
             swimToGolf();
         } else if (activeIndex == 5 && sign == -1) {
             dummyFunc();
+        } else if (activeIndex == 6 && sign == -1) {
+            displaySwim();
+        } else if (activeIndex == 7 && sign == -1) {
+            dummyFunc();
+        } else if (activeIndex == 8 && sign == -1) {
+            displayRun();
         } else {
             activationFunctions[i]();
         }

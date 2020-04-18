@@ -99,12 +99,6 @@ function scatterPlot() {
                 .attr("class", "dot")
                 .attr("transform", function(d) {
                     var tx = xScale(d.date) + margin.left;
-                    return "translate("+[tx,-10]+")";
-                })
-                .transition()
-                .duration(1000)
-                .attr("transform", function(d) {
-                    var tx = xScale(d.date) + margin.left;
                     var ty = yScale(d.time) + margin.bottom;
                     return "translate("+[tx,ty]+")";
                 })
@@ -115,7 +109,11 @@ function scatterPlot() {
                     } else {
                         return "#808080";
                     }
-                });
+                })
+                .style("opacity", "0")
+                .transition()
+                .duration(golf.animDuration)
+                .style("opacity", "1");
 
             // Render tooltip for dots
             var tooltip = d3.select("#graphic").select("#tooltip")
