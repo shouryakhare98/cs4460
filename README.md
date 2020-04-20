@@ -13,15 +13,15 @@ This project was developed by The Vaporflies (Ross Cefalu, Shourya Khare, Sophie
 ## Visualization Design
 The visualization uses the "scrollytelling" technique, along with simple and meaningful graphs, to convey a message to the user using our data. All the plots are interactable to give the user more freedom to explore on their own.
 
-![Golf line plot](https://github.com/shouryakhare98/cs4460/tree/master/images/preview1.png)
+![Golf line plot](https://raw.githubusercontent.com/shouryakhare98/cs4460/master/images/preview1.png)
 
 The golf graph is a line graph plotting the average drive distance in 4 major golf tournaments from 1980 to 2019. Significant innovations in the sport are marked with tee flags. Hovering over a flag will reveal the name and year of that innovation. Users can add and remove lines corresponding to each innovation using the checkboxes above the graph.
 
-![Swim scatter plot](https://github.com/shouryakhare98/cs4460/tree/master/images/preview2.png)
+![Swim scatter plot](https://raw.githubusercontent.com/shouryakhare98/cs4460/master/images/preview2.png)
 
 The swim graph is a scatter graph plotting the 25 fastest times in 5 different swim events at official competitions. This graph shows the impact of the Speedo LZR full body suit. The release and banning of the suit are marked with pool lane dividers. Hovering over the dividers will reveal the release and banning of the suit along with the year. Additionally, hovering over the dots will reveal the name and time of the swimmer, and whether the full body suit was used by the swimmer to break the record.
 
-![Running tiles](https://github.com/shouryakhare98/cs4460/tree/master/images/preview3.png)
+![Running tiles](https://raw.githubusercontent.com/shouryakhare98/cs4460/master/images/preview3.png)
 
 The final visualization is the running visualization. It is comprised of 6 tiles that represet key facts about the Nike Vaporfly shoe series. Hovering over each tile will reveal the fact. Clicking on the tile will lead to the source of that fact.
 
@@ -40,4 +40,5 @@ Use the following command for Python 3:
 python -m http.server 8888
 ```
 This will host the website locally on your computer.
+
 4. On a browser of your choice, go to `http://localhost:8888/` to view the visualization.
