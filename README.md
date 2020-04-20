@@ -25,7 +25,7 @@ The swim graph is a scatter graph plotting the 25 fastest times in 5 different s
 
 The final visualization is the running visualization. It is comprised of 6 tiles that represet key facts about the Nike Vaporfly shoe series. Hovering over each tile will reveal the fact. Clicking on the tile will lead to the source of that fact.
 
-## Viewing the Visualiation
+## Viewing the Visualization
 The easiest way to view the visualiation is to go to [this Github Pages link](https://shouryakhare98.github.io/cs4460).
 
 To view the visualization locally, follow the steps below:
